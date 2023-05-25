@@ -12,8 +12,8 @@ void merge(vector<vector<Lit>> &a, vector<vector<Lit>> &b) {
   a.insert(a.end(), b.begin(), b.end());
 }
 void distribute(Lit t, vector<vector<Lit>>& formula) {
-  for (auto& c : formula)
-    c.push_back(t);
+  for (auto& h : formula)
+    h.push_back(t);
 }
 void addFormula(vector<vector<Lit>>& formula) {
   for (auto& c : formula) {
@@ -69,10 +69,10 @@ int main() {
   int m, n, r;
   cin >> m >> n >> r;
 
-  vector<vector<Lit>> V(m, vector<Lit>(n));
+  vector<vector<Lit>> c(m, vector<Lit>(n));
   for (int i = 0; i < m; i++)
     for (int j = 0; j < n; j++)
-      V[i][j] = mkLit(solver.newVar());
+      c[i][j] = mkLit(solver.newVar());
 
   vector<int> N(r);
   for (int i = 0; i < r; i++)
@@ -82,19 +82,19 @@ int main() {
   for (int i = 0, R; i < m; i++)
     for (int j = 0; j < n; j++) {
       cin >> R, R--; // R[i][j]
-      regionLits[R].push_back(V[i][j]);
+      regionLits[R].push_back(c[i][j]);
     }
   
   auto start = chrono::steady_clock::now();
   // Add rule: No three vertically consecutive - symbols
   for (int i = 0; i < m - 2; i++)
     for (int j = 0; j < n; j++)
-      solver.addClause(~V[i][j], ~V[i+1][j], ~V[i+2][j]);
+      solver.addClause(~c[i][j], ~c[i+1][j], ~c[i+2][j]);
 
   // Add rule: No three horizontally consecutive | symbols
   for (int i = 0; i < m; i++)
     for (int j = 0; j < n - 2; j++)
-      solver.addClause(V[i][j], V[i][j+1], V[i][j+2]);
+      solver.addClause(c[i][j], c[i][j+1], c[i][j+2]);
 
   // Add rule: If a territory contains a number, then either
   //           the - or | count is equal to that number.
@@ -109,12 +109,31 @@ int main() {
     }
   }
 
+  // Add rule: No 2x3 subgrid of -
+  for (int i = 0; i < m - 1; i++)
+    for (int j = 0; j < n - 2; j++) {
+      Minisat::vec<Lit> clause;
+      clause.push(~c[i][j]), clause.push(~c[i][j+1]), clause.push(~c[i][j+2]);
+      clause.push(~c[i+1][j]), clause.push(~c[i+1][j+1]), clause.push(~c[i+1][j+2]);
+      solver.addClause(clause);
+    }
+
+  // Add rule: No 3x2 subgrid of |
+  for (int i = 0; i < m - 2; i++)
+    for (int j = 0; j < n - 1; j++) {
+      Minisat::vec<Lit> clause;
+      clause.push(c[i][j]), clause.push(c[i][j+1]);
+      clause.push(c[i+1][j]), clause.push(c[i+1][j+1]);
+      clause.push(c[i+2][j]), clause.push(c[i+2][j+1]);
+      solver.addClause(clause);
+    }
+
   bool sat = solver.solve();
   auto finish = chrono::steady_clock::now();
   if (sat) {
     for (int i = 0; i < m; i++)
       for (int j = 0; j < n; j++)
-        cout << (solver.modelValue(V[i][j]).isTrue() ? '-' : '|') << " \n"[j == n - 1];
+        cout << (solver.modelValue(c[i][j]).isTrue() ? '-' : '|') << " \n"[j == n - 1];
   } else {
     cout << "No solution\n";
   }
