@@ -5,7 +5,7 @@
 This project is dedicated to solving Juosan puzzles&mdash;which have been proven to be NP-complete&mdash;using a SAT-based approach.
 It works by encoding the rules of the Juosan puzzle input to propositional formulas, and feeding the resulting formulas to a SAT solver. 
 The SAT solver we use is MiniSAT, which is one of the most popular SAT solvers in the field.
-It can be shown that the encoding we implemented is proportional to the puzzle's size. Specifically, it is bounded by $O(m^2 n^2)$ where $m \times n$ is the puzzle size.
+It can be shown that the encoding we implemented is polynomially proportional to the puzzle's size. Specifically, it is bounded by $O(m^2 n^2)$ where $m \times n$ is the puzzle size.
 
 For more information about the puzzle, see [https://www.nikoli.co.jp/en/puzzles/juosan](https://www.nikoli.co.jp/en/puzzles/juosan).
 
@@ -21,7 +21,7 @@ This repository includes the following:
 
 Here are the steps to use the program that you need to follow:
 
-1. Install MiniSAT and build the solver source code. You can skip this step if you just use the executable we provided.
+1. Install MiniSAT and build the solver source code. We suggest reading [this article](https://medium.com/@timbersama2020/minisat-installation-guide-efb99a897138) for a guide to MiniSAT installation. You can skip this step if you just use the executable we provided.
 2. Run the resulting executable file.
 3. Input the Juosan puzzle according to the [Input/Output Format](#inputoutput-format) section.
 
