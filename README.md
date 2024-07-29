@@ -3,9 +3,16 @@
 ## Overview
 
 This project is dedicated to solving Juosan puzzles&mdash;which have been proven to be NP-complete&mdash;using a SAT-based approach.
-It works by encoding the rules of the Juosan puzzle input to propositional formulas, and feeding the resulting formulas to a SAT solver. 
-The SAT solver we use is MiniSAT, which is one of the most popular SAT solvers in the field.
+It works by encoding the rules of the Juosan puzzle input to propositional formulas and feeding the resulting formulas to a SAT solver. 
+The SAT solver we use is MiniSAT, one of the field's most popular SAT solvers.
 It can be shown that the encoding we implemented is polynomially proportional to the puzzle's size. Specifically, it is bounded by $O(m^2 n^2)$ where $m \times n$ is the puzzle size.
+
+This repository is related to our works submitted to [ICoMPAC 2023](https://icompac.its.ac.id).
+The proceedings, which include our paper, have been published by [Springer](https://link.springer.com/chapter/10.1007/978-981-97-2136-8_16).
+
+Additionally, we have created a web application called [Juosan Interactive Playground](https://tsaqifammar.pythonanywhere.com).
+This tool allows you to visualize, play, design puzzles, and explore our solver in an interactive environment.
+The source code for this application can be found in the [juosan-interactive-playground](https://github.com/tsaqifammar/juosan-interactive-playground) repository.
 
 For more information about the puzzle, see [https://www.nikoli.co.jp/en/puzzles/juosan](https://www.nikoli.co.jp/en/puzzles/juosan).
 
@@ -15,7 +22,7 @@ This repository includes the following:
 
 * **Juosan Solver**: The solver is implemented in C++ and use the solver MiniSAT. You can find the code in the `codes/sat-based-solver.cpp` file. Additionally, the compiled executable is also included.
 * **Test Cases**: Seventy test cases of Juosan puzzles in plain text format sourced from [Janko](https://www.janko.at/Raetsel/Juosan/index.htm). You can find them in the `test_cases` directory.
-* **Experimental Data**: Experimental data regarding the runtime of the solver to solve the aformentioned test cases. You can find the data in the `experimental_data/Juosan SAT Runtime Experiment.xlsx` file.
+* **Experimental Data**: Experimental data regarding the runtime of the solver to solve the aforementioned test cases. You can find the data in the `experimental_data/Juosan SAT Runtime Experiment.xlsx` file.
 
 ## How to use
 
